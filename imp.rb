@@ -133,7 +133,7 @@ while true do
   end
   tmp = imp.getFilteredIncidents
   imp.filterIncidents
-  new_incidents = tmp - imp.getFilteredIncidents
+  new_incidents = imp.getFilteredIncidents - tmp
   if (new_incidents.any?)
     most_severe_incident = Imp.mostSevereIncident(new_incidents)
     puts "There are new incidents!"
@@ -148,7 +148,7 @@ while true do
       Imp.fitstatColorSeq(fitstat, fitstat_color_unknown_high, fitstat_color_unknown_low)
       last_status = 3
     end
-  elsif (tmp.empty? and last_status != 0)
+  elsif (imp.getFilteredIncidents.empty? and last_status != 0)
     Imp.fitstatColorSeq(fitstat, fitstat_color_ok_high, fitstat_color_ok_low)
     last_status = 0
   end
