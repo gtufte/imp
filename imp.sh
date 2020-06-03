@@ -25,6 +25,7 @@ docker run \
     -e SENSU_USER \
     -e SENSU_PASSWORD \
     -e SENSU_NAMESPACE \
+    -e SENSU_FETCH_TIMEOUT \
     --dns $nameserver \
     --restart no \
     --read-only=true \
