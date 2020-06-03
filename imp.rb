@@ -1,5 +1,8 @@
 require 'httparty'
 require 'rubyserial'
+require 'io/console'
+
+STDOUT.sync = true
 
 class Imp
 
@@ -26,7 +29,7 @@ class Imp
     @access_token = r['access_token']
     @refresh_token = r['refresh_token']
   end
-  
+
   def getAccessToken
     return @access_token
   end
@@ -34,7 +37,7 @@ class Imp
   def getRefreshToken
     return @refresh_token
   end
-  
+
   def getIncidents
     return @incidents
   end
@@ -91,7 +94,7 @@ class Imp
     end
     return 3
   end
-  
+
   def self.fitstatColorSeq(dev, a = nil, b = nil, i = "0300")
     dev.write("B#{a}-#{i}#{b}-#{i}\r\n")
     sleep(3)
