@@ -2,7 +2,7 @@ require 'httparty'
 require 'rubyserial'
 require 'io/console'
 
-STDOUT.sync = true
+$stdout.sync = true
 
 class Imp
 
@@ -107,6 +107,12 @@ puts "INFO: Connecting to fitstat"
 fitstat = Serial.new '/dev/fitstat'
 puts "INFO: Device found!"
 
+trap "SIGINT" do
+  puts "Exiting..."
+  Imp.fitstatColorSeq(fitstat, "#000000", "#000000")
+  exit 130
+end
+
 fitstat_color_init_high = "#F000F0"
 fitstat_color_init_low = "#100010"
 fitstat_color_critical_high = "#FF0000"
@@ -118,13 +124,15 @@ fitstat_color_unknown_low = "#001111"
 fitstat_color_ok_high = "#00FF00"
 fitstat_color_ok_low = "#001100"
 
+fetch_timeout = ENV['SENSU_FETCH_TIMEOUT'].to_i
+
 imp = Imp.new
 puts "INFO: Acquiring API access token from Sensu"
 imp.auth
 puts "INFO: Initial fetch of all unsilenced incidents"
 imp.filterIncidents
 Imp.fitstatColorSeq(fitstat, fitstat_color_init_high, fitstat_color_init_low)
-sleep(60)
+sleep(fetch_timeout)
 
 i = 0
 last_status = 0
@@ -155,6 +163,6 @@ while true do
     Imp.fitstatColorSeq(fitstat, fitstat_color_ok_high, fitstat_color_ok_low)
     last_status = 0
   end
-  sleep(60)
+  sleep(fetch_timeout)
   i += 1
 end

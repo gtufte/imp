@@ -14,6 +14,7 @@ SENSU_HOST=sensu.example.com
 SENSU_USER=admin
 SENSU_PASSWORD=adminpassword
 SENSU_NAMESPACE=default
+SENSU_FETCH_TIMEOUT=45
 ```
 Then:
 ```
